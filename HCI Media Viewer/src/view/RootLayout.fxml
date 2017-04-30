@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
    <bottom>
       <VBox prefHeight="59.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
@@ -45,7 +45,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <Button mnemonicParsing="false">
+                  <Button mnemonicParsing="false" onAction="#handleShuffle">
                      <opaqueInsets>
                         <Insets top="5.0" />
                      </opaqueInsets>
@@ -56,7 +56,7 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Button mnemonicParsing="false">
+                  <Button mnemonicParsing="false" onAction="#handleRepeat">
                      <opaqueInsets>
                         <Insets bottom="5.0" top="5.0" />
                      </opaqueInsets>
@@ -67,7 +67,7 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Button mnemonicParsing="false">
+                  <Button mnemonicParsing="false" onAction="#handleBack">
                      <opaqueInsets>
                         <Insets bottom="5.0" top="5.0" />
                      </opaqueInsets>
@@ -78,7 +78,7 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Button mnemonicParsing="false">
+                  <Button mnemonicParsing="false" onAction="#handlePlay">
                      <opaqueInsets>
                         <Insets bottom="5.0" top="5.0" />
                      </opaqueInsets>
@@ -89,7 +89,7 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Button mnemonicParsing="false">
+                  <Button mnemonicParsing="false" onAction="#handleNext">
                      <opaqueInsets>
                         <Insets bottom="5.0" top="5.0" />
                      </opaqueInsets>
@@ -100,7 +100,7 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Button mnemonicParsing="false">
+                  <Button mnemonicParsing="false" onAction="#handleMute">
                      <opaqueInsets>
                         <Insets bottom="5.0" top="5.0" />
                      </opaqueInsets>
@@ -111,11 +111,11 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Slider>
+                  <Slider showTickMarks="true" snapToTicks="true">
                      <opaqueInsets>
                         <Insets bottom="5.0" top="5.0" />
                      </opaqueInsets></Slider>
-                  <Button mnemonicParsing="false">
+                  <Button mnemonicParsing="false" onAction="#handleExpand">
                      <opaqueInsets>
                         <Insets bottom="5.0" top="5.0" />
                      </opaqueInsets>
@@ -142,7 +142,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-                  <MenuItem mnemonicParsing="false" text="Open">
+                  <MenuItem mnemonicParsing="false" onAction="#handleOpen" text="Open">
                      <graphic>
                         <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -151,7 +151,7 @@
                         </ImageView>
                      </graphic>
                   </MenuItem>
-              <MenuItem mnemonicParsing="false" text="Exit">
+              <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Exit">
                      <graphic>
                         <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -163,7 +163,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Playback">
             <items>
-              <MenuItem mnemonicParsing="false" text="Play">
+              <MenuItem mnemonicParsing="false" onAction="#handlePlay" text="Play">
                      <graphic>
                         <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -171,7 +171,7 @@
                            </image>
                         </ImageView>
                      </graphic></MenuItem>
-                  <MenuItem mnemonicParsing="false" text="Previous">
+                  <MenuItem mnemonicParsing="false" onAction="#handleBack" text="Previous">
                      <graphic>
                         <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -180,7 +180,7 @@
                         </ImageView>
                      </graphic>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" text="Next">
+                  <MenuItem mnemonicParsing="false" onAction="#handleNext" text="Next">
                      <graphic>
                         <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -193,7 +193,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="About">
+              <MenuItem mnemonicParsing="false" onAction="#handleAbout" text="About">
                      <graphic>
                         <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
                            <image>
