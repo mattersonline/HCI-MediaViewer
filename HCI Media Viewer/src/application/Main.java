@@ -18,10 +18,10 @@ public class Main extends Application {
 			loader.setLocation(Main.class.getResource("/view/RootLayout.fxml"));
 			rootLayout = (BorderPane) loader.load();
 			
-			Scene scene = new Scene(rootLayout, 800, 800);
+			Scene scene = new Scene(rootLayout, 800, 600);
 			
 			primaryStage.setScene(scene);
-			primaryStage.setResizable(false);
+			//primaryStage.setResizable(false);
 			primaryStage.show();
 			
 		} catch(Exception e) {
