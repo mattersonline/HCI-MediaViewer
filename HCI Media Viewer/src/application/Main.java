@@ -21,7 +21,7 @@ public class Main extends Application {
 			Scene scene = new Scene(rootLayout, 800, 600);
 			
 			primaryStage.setScene(scene);
-			//primaryStage.setResizable(false);
+			primaryStage.setTitle("HCI Media Viewer");;
 			primaryStage.show();
 			
 		} catch(Exception e) {
