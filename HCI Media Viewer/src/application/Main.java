@@ -18,6 +18,9 @@ public class Main extends Application {
 			loader.setLocation(Main.class.getResource("/view/RootLayout.fxml"));
 			rootLayout = (BorderPane) loader.load();
 			
+			Controller controller = loader.getController();
+			controller.setMain(this);
+			
 			Scene scene = new Scene(rootLayout, 800, 600);
 			
 			primaryStage.setScene(scene);
