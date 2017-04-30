@@ -48,6 +48,9 @@
          <center>
             <HBox alignment="CENTER" BorderPane.alignment="CENTER">
                <children>
+               	<fx:define>
+               		<Image fx:id="shuffle" url="/HCI Media Viewer/Icon/shuffle.png" />
+               	</fx:define>
                 <Button mnemonicParsing="false" text="Shuffle">
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
