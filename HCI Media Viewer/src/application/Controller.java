@@ -1,8 +1,41 @@
 package application;
 
-public class Controller {
+import java.net.URL;
+import java.util.ResourceBundle;
 
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+
+public class Controller implements Initializable{
+
+	
+	
 	private Main main;
+	
+	@FXML // fx:id="shuffleButton"
+	private Button shuffleButton;
+	
+	@FXML
+	private Button repeatButton;
+	
+	@FXML
+	private Button previousButton;
+	
+	@FXML
+	private Button playPauseButton;
+	
+	@FXML
+	private Button nextButton;
+	
+	@FXML
+	private Button muteButton;
+	
+	@FXML
+	private Button fullscreenButton;
 	
 	public void setMain(Main main){
 		this.main = main;
@@ -11,6 +44,31 @@ public class Controller {
 	// FIXME: Handle the shuffle feature
 	public void handleShuffle(){
 		System.out.println("handleShuffle");
+	}
+	
+	public void handleKeyboard(KeyEvent e){
+		
+		if(e.getCode() == KeyCode.S){
+			shuffleButton.fire();
+		}
+		if(e.getCode() == KeyCode.R){
+			repeatButton.fire();
+		}
+		if(e.getCode() == KeyCode.LEFT){
+		previousButton.fire();
+		}
+		if(e.getCode() == KeyCode.ENTER || e.getCode() == KeyCode.SPACE){
+			playPauseButton.fire();
+		}
+		if(e.getCode() == KeyCode.RIGHT){
+			nextButton.fire();
+		}
+		if(e.getCode() == KeyCode.M){
+			muteButton.fire();
+		}
+		if(e.getCode() == KeyCode.F11){
+			fullscreenButton.fire();
+		}
 	}
 	
 	// FIXME: Handle the repeat feature
@@ -56,5 +114,14 @@ public class Controller {
 	public void handleAbout(){
 		System.out.println("handleAbout");
 	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	
 
 }
