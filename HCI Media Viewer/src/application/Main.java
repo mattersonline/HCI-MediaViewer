@@ -2,6 +2,7 @@ package application;
 	
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -24,6 +25,7 @@ public class Main extends Application {
 			
 			Controller controller = loader.getController();
 			controller.setMain(this);
+			controller.setStage(primaryStage);
 			scene = new Scene(rootLayout, 800, 600);
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("HCI Media Viewer");;
