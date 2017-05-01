@@ -22,10 +22,11 @@ public class Main extends Application {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(Main.class.getResource("/view/RootLayout.fxml"));
 			rootLayout = (BorderPane) loader.load();
-			
+			Model model = new Model();
 			Controller controller = loader.getController();
 			controller.setMain(this);
 			controller.setStage(primaryStage);
+			controller.setModel(model);
 			scene = new Scene(rootLayout, 800, 600);
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("HCI Media Viewer");;

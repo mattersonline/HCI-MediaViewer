@@ -1,5 +1,6 @@
 package application;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -21,6 +22,7 @@ public class Controller implements Initializable{
 	// Window variables
 	private Stage primaryStage;
 	private Main main;
+	private Model model;
 	
 	// FXML Objects
 	@FXML private Button shuffleButton; // fx:id="shuffleButton"
@@ -37,6 +39,10 @@ public class Controller implements Initializable{
 	
 	public void setStage(Stage primaryStage){
 		this.primaryStage = primaryStage;
+	}
+	
+	public void setModel(Model model){
+		this.model = model;
 	}
 	
 	// FIXME: Handle the shuffle feature
@@ -103,11 +109,11 @@ public class Controller implements Initializable{
 		}
 	}
 	
-	// FIXME: I got the file-chooser running however we still need to save files to model from here
+	// FIXME: This opens one single file right now, needs to be expanded
 	public void handleOpen(){
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Resource File");
-		fileChooser.showOpenDialog(primaryStage);
+		model.setSelectedFile(fileChooser.showOpenDialog(primaryStage));
 	}
 	
 	public void handleExit(){
