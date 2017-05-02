@@ -13,6 +13,9 @@ import javafx.scene.control.Slider;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -24,6 +27,7 @@ public class Controller implements Initializable{
 	private Stage primaryStage;
 	private Main main;
 	private Model model;
+	private MediaPlayer player;
 	
 	// FXML Objects
 	@FXML private Button shuffleButton; // fx:id="shuffleButton"
@@ -33,6 +37,8 @@ public class Controller implements Initializable{
 	@FXML private Button nextButton;
 	@FXML private Button muteButton;
 	@FXML private Button fullscreenButton;
+
+	@FXML private MediaView media;
 	@FXML private Slider volumeSlider;
 
 	public void setMain(Main main){
@@ -45,6 +51,11 @@ public class Controller implements Initializable{
 	
 	public void setModel(Model model){
 		this.model = model;
+	}
+	
+	public void setPlayer(MediaPlayer player){
+		this.player = player;
+		media.setMediaPlayer(player);
 	}
 	
 	// FIXME: Handle the shuffle feature
@@ -90,6 +101,12 @@ public class Controller implements Initializable{
 	// FIXME: Handle the play button
 	public void handlePlay(){
 		System.out.println("handlePlay");
+		System.out.println(player.getMedia().getSource());
+		if(player.getStatus() == MediaPlayer.Status.READY || player.getStatus() == MediaPlayer.Status.PAUSED || player.getStatus() == MediaPlayer.Status.STOPPED)
+			player.play();
+		else
+			player.pause();
+		System.out.println(player.getStatus());
 	}
 	
 	// FIXME: Handle the next media button
@@ -123,6 +140,7 @@ public class Controller implements Initializable{
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Resource File");
 		model.setSelectedFile(fileChooser.showOpenDialog(primaryStage));
+		player = new MediaPlayer(new Media(model.getSelectedFile().toURI().toString()));
 	}
 	
 	public void handleExit(){
@@ -150,8 +168,7 @@ public class Controller implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-		
+		player = new MediaPlayer(new Media(Main.class.getResource("/image/default.mp4").toExternalForm()));
 	}
 
 

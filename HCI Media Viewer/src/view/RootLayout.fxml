@@ -216,7 +216,7 @@
             <Rectangle arcHeight="5.0" arcWidth="5.0" height="50.0" stroke="BLACK" strokeType="INSIDE" width="800.0" BorderPane.alignment="CENTER" />
          </bottom>
          <center>
-            <MediaView fitHeight="200.0" fitWidth="200.0" BorderPane.alignment="CENTER" />
+            <MediaView fx:id="media" fitHeight="200.0" fitWidth="200.0" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
    </center>
