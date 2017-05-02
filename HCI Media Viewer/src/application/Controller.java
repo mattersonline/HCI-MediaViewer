@@ -1,24 +1,20 @@
 package application;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Slider;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -27,10 +23,8 @@ public class Controller implements Initializable{
 
 	// Window variables
 	private Stage primaryStage;
-	@SuppressWarnings("unused")
 	private Main main;
 	private Model model;
-	private MediaPlayer player;
 	
 	// FXML Objects
 	@FXML private Button shuffleButton; // fx:id="shuffleButton"
@@ -40,9 +34,6 @@ public class Controller implements Initializable{
 	@FXML private Button nextButton;
 	@FXML private Button muteButton;
 	@FXML private Button fullscreenButton;
-
-	@FXML private MediaView media;
-	@FXML private Slider volumeSlider;
 
 	public void setMain(Main main){
 		this.main = main;
@@ -56,14 +47,11 @@ public class Controller implements Initializable{
 		this.model = model;
 	}
 	
-	public void setPlayer(MediaPlayer player){
-		this.player = player;
-		media.setMediaPlayer(player);
-	}
-	
 	// FIXME: Handle the shuffle feature
 	public void handleShuffle(){
 		System.out.println("handleShuffle");
+		model.shuffle();
+		System.out.println(model.getSelectedFile());
 	}
 	
 	public void handleKeyboard(KeyEvent e){
@@ -99,36 +87,23 @@ public class Controller implements Initializable{
 	// FIXME: Handle the previous media button
 	public void handleBack(){
 		System.out.println("handleBack");
+		model.previousFile();
 	}
 	
 	// FIXME: Handle the play button
 	public void handlePlay(){
 		System.out.println("handlePlay");
-		System.out.println(media.getMediaPlayer().getMedia().getSource());
-		if(player.getStatus() == MediaPlayer.Status.READY || player.getStatus() == MediaPlayer.Status.PAUSED || player.getStatus() == MediaPlayer.Status.STOPPED)
-			player.play();
-		else
-			player.pause();
-		System.out.println(player.getStatus());
 	}
 	
 	// FIXME: Handle the next media button
 	public void handleNext(){
 		System.out.println("handleNext");
+		model.nextFile();
 	}
 	
 	// FIXME: Handle the mute button. Remember it works with the volume slider.
 	public void handleMute(){
-		if(!model.isMute()){
-			model.setMute(true);
-			volumeSlider.setDisable(true);
-			model.setPreviousVolume(volumeSlider.getValue());
-			volumeSlider.setValue(0);
-		} else {
-			model.setMute(false);
-			volumeSlider.setDisable(false);
-			volumeSlider.setValue(model.getPreviousVolume());
-		}
+		System.out.println("handleMute");
 	}
 	
 	// TODO: Window will expand properly, however we need to find a way to hide certain controls on full-screen
@@ -142,6 +117,7 @@ public class Controller implements Initializable{
 	
 	// FIXME: This opens one single file right now, needs to be expanded
 	public void handleOpen(){
+
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Resource File");
 		model.setSelectedFile(fileChooser.showOpenDialog(primaryStage));
@@ -150,6 +126,11 @@ public class Controller implements Initializable{
 		media.fitWidthProperty().bind(((BorderPane) (media.getParent())).widthProperty());
 		media.fitHeightProperty().bind(((BorderPane) (media.getParent())).heightProperty());
 		media.setPreserveRatio(true);
+
+		DirectoryChooser directoryChooser = new DirectoryChooser();
+		directoryChooser.setTitle("Open Resource File");
+		model.setSelectedDirectory(directoryChooser.showDialog(primaryStage));
+
 	}
 	
 	public void handleExit(){
@@ -167,39 +148,22 @@ public class Controller implements Initializable{
         VBox dialogVbox = new VBox(20);
         dialogVbox.getChildren().add(new Text("Team Members:"
         		+ "\n - Jackson Blankenship"
-        		+ "\n - Mathew Borum"
-        		+ "\n - Christoph Kinzel"
-        		+ "\n - Zachary Connor"
+        		+ "\n - PUT YOUR NAMES HERE"
         		+ "\n\nShortcuts:"
-        		+ "\n - R : Repeat"
-        		+ "\n - S : Shuffle"
-        		+ "\n - Space/Enter : Play/Pause"
-        		+ "\n - Left : Previous"
-        		+ "\n - Right : Next"
-        		+ "\n - M : Mute"
-        		+ "\n - F11 : Fullscreen"));
-        		
-        Scene dialogScene = new Scene(dialogVbox, 300, 300);
+        		+ "\n - CTRL-O : Open file"));
+        Scene dialogScene = new Scene(dialogVbox, 300, 200);
         dialog.setScene(dialogScene);
         dialog.show();
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		player = new MediaPlayer(new Media(Main.class.getResource("/image/default.mp4").toExternalForm()));
-		media.setMediaPlayer(player);
-
+		// TODO Auto-generated method stub
 		
-		volumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
-		    @Override
-		    public void changed(ObservableValue<? extends Number> observable,
-		            Number oldValue, Number newValue) {
-	    		model.setVolumeLevel(volumeSlider.getValue());
-		    }
-		});
 	}
 
 
 	
 
 }
+
