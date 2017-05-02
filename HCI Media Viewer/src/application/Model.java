@@ -19,7 +19,7 @@ public class Model {
 	
 	int fileIndex;
 	
-	int directorySize;
+	int directorySize = 1;
 	boolean mute = false;
 	
 	public double getPreviousVolume() {
@@ -52,6 +52,8 @@ public class Model {
 
 	public void setSelectedFile(File selectedFile) {
 		this.selectedFile = selectedFile;
+		
+		selectedFiles = new File[]{selectedFile};
 	}
 	
 	public void setSelectedDirectory(File selectedDirectory) {
@@ -60,7 +62,7 @@ public class Model {
 		selectedFiles = selectedDirectory.listFiles();
 		
 		fileIndex = 0;
-		directorySize = selectedFiles.length;
+		directorySize = selectedFiles.length-2;
 		
 		selectedFile = selectedFiles[0];
 		
