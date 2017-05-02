@@ -8,6 +8,7 @@ public class Model {
 	
 	double volumeLevel = 100;
 	double previousVolume = 0;
+
 	boolean loop;
 	
 	File selectedDirectory;
@@ -19,6 +20,8 @@ public class Model {
 	int fileIndex;
 	
 	int directorySize;
+	boolean mute = false;
+	
 	public double getPreviousVolume() {
 		return previousVolume;
 	}
@@ -26,9 +29,7 @@ public class Model {
 	public void setPreviousVolume(double previousVolume) {
 		this.previousVolume = previousVolume;
 	}
-
-	boolean mute = false;
-
+	
 	public boolean isMute() {
 		return mute;
 	}
