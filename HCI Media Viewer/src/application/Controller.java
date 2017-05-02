@@ -11,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
@@ -117,20 +116,9 @@ public class Controller implements Initializable{
 	
 	// FIXME: This opens one single file right now, needs to be expanded
 	public void handleOpen(){
-
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Open Resource File");
-		model.setSelectedFile(fileChooser.showOpenDialog(primaryStage));
-		player = new MediaPlayer(new Media(model.getSelectedFile().toURI().toString()));
-		media.setMediaPlayer(player);
-		media.fitWidthProperty().bind(((BorderPane) (media.getParent())).widthProperty());
-		media.fitHeightProperty().bind(((BorderPane) (media.getParent())).heightProperty());
-		media.setPreserveRatio(true);
-
 		DirectoryChooser directoryChooser = new DirectoryChooser();
 		directoryChooser.setTitle("Open Resource File");
 		model.setSelectedDirectory(directoryChooser.showDialog(primaryStage));
-
 	}
 	
 	public void handleExit(){
