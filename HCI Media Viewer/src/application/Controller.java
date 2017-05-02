@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -146,6 +147,9 @@ public class Controller implements Initializable{
 		model.setSelectedFile(fileChooser.showOpenDialog(primaryStage));
 		player = new MediaPlayer(new Media(model.getSelectedFile().toURI().toString()));
 		media.setMediaPlayer(player);
+		media.fitWidthProperty().bind(((BorderPane) (media.getParent())).widthProperty());
+		media.fitHeightProperty().bind(((BorderPane) (media.getParent())).heightProperty());
+		media.setPreserveRatio(true);
 	}
 	
 	public void handleExit(){
