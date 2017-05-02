@@ -175,7 +175,7 @@ public class Controller implements Initializable{
         		+ "\n - M : Mute"
         		+ "\n - F11 : Fullscreen"));
         		
-        Scene dialogScene = new Scene(dialogVbox, 300, 200);
+        Scene dialogScene = new Scene(dialogVbox, 300, 300);
         dialog.setScene(dialogScene);
         dialog.show();
 	}
