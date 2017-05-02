@@ -63,6 +63,7 @@ public class Controller implements Initializable{
 	// FIXME: Handle the shuffle feature
 	public void handleShuffle(){
 		System.out.println("handleShuffle");
+		model.shuffle();
 	}
 	
 	public void handleKeyboard(KeyEvent e){
@@ -98,6 +99,7 @@ public class Controller implements Initializable{
 	// FIXME: Handle the previous media button
 	public void handleBack(){
 		System.out.println("handleBack");
+		model.previousFile();
 	}
 	
 	// FIXME: Handle the play button
@@ -114,6 +116,7 @@ public class Controller implements Initializable{
 	// FIXME: Handle the next media button
 	public void handleNext(){
 		System.out.println("handleNext");
+		model.nextFile();
 	}
 	
 	// FIXME: Handle the mute button. Remember it works with the volume slider.
@@ -199,3 +202,8 @@ public class Controller implements Initializable{
 	
 
 }
+
+
+
+
+
