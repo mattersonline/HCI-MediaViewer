@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 
 public class Main extends Application {
@@ -25,7 +26,8 @@ public class Main extends Application {
 			controller.setModel(model);
 			scene = new Scene(rootLayout, 800, 600);
 			primaryStage.setScene(scene);
-			primaryStage.setTitle("HCI Media Viewer");;
+			primaryStage.setTitle("HCI Media Player 2.0");
+			primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/image/logo.png")));
 			primaryStage.show();
 			primaryStage.setMinWidth(primaryStage.getWidth());
 			primaryStage.setMinHeight(primaryStage.getHeight());
