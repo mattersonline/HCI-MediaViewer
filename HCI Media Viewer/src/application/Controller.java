@@ -1,12 +1,12 @@
 package application;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -27,6 +27,7 @@ public class Controller implements Initializable{
 
 	// Window variables
 	private Stage primaryStage;
+	@SuppressWarnings("unused")
 	private Main main;
 	private Model model;
 	private MediaPlayer player;
@@ -103,7 +104,7 @@ public class Controller implements Initializable{
 	// FIXME: Handle the play button
 	public void handlePlay(){
 		System.out.println("handlePlay");
-		System.out.println(player.getMedia().getSource());
+		System.out.println(media.getMediaPlayer().getMedia().getSource());
 		if(player.getStatus() == MediaPlayer.Status.READY || player.getStatus() == MediaPlayer.Status.PAUSED || player.getStatus() == MediaPlayer.Status.STOPPED)
 			player.play();
 		else
@@ -145,6 +146,7 @@ public class Controller implements Initializable{
 		fileChooser.setTitle("Open Resource File");
 		model.setSelectedFile(fileChooser.showOpenDialog(primaryStage));
 		player = new MediaPlayer(new Media(model.getSelectedFile().toURI().toString()));
+		media.setMediaPlayer(player);
 	}
 	
 	public void handleExit(){
@@ -173,6 +175,8 @@ public class Controller implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		player = new MediaPlayer(new Media(Main.class.getResource("/image/default.mp4").toExternalForm()));
+		media.setMediaPlayer(player);
+
 		
 		volumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
 		    @Override

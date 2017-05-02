@@ -14,7 +14,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.media.MediaView?>
-<?import javafx.scene.shape.Rectangle?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
    <bottom>
@@ -209,12 +208,6 @@
    </top>
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <top>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" height="50.0" stroke="BLACK" strokeType="INSIDE" width="800.0" BorderPane.alignment="CENTER" />
-         </top>
-         <bottom>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" height="50.0" stroke="BLACK" strokeType="INSIDE" width="800.0" BorderPane.alignment="CENTER" />
-         </bottom>
          <center>
             <MediaView fx:id="media" fitHeight="200.0" fitWidth="200.0" BorderPane.alignment="CENTER" />
          </center>
