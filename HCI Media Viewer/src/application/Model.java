@@ -5,6 +5,15 @@ import java.io.File;
 public class Model {
 	File selectedFile;
 	double volumeLevel = 100;
+	double previousVolume = 0;
+	public double getPreviousVolume() {
+		return previousVolume;
+	}
+
+	public void setPreviousVolume(double previousVolume) {
+		this.previousVolume = previousVolume;
+	}
+
 	boolean mute = false;
 
 	public boolean isMute() {
