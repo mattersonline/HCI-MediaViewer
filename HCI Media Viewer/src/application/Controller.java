@@ -123,7 +123,8 @@ public class Controller implements Initializable{
 			playPause.setImage(new Image(Main.class.getResourceAsStream("/image/pause.png")));
 		}
 		else{
-			player.stop();
+			if(model.getSelectedFile().getName().substring(model.getSelectedFile().getName().lastIndexOf('.') + 1).equals("mp4"))
+				player.stop();
 			player.pause();
 			player.seek(new Duration(player.getStopTime().toMillis() * temp / 100.0));
 			seekSlider.setValue(temp);
@@ -136,7 +137,6 @@ public class Controller implements Initializable{
 		handleChange();
 	}
 	
-	// FIXME: Handle the mute button. Remember it works with the volume slider.
 	public void handleMute(){
 		if(!model.isMute()){
 			model.setMute(true);
@@ -150,7 +150,6 @@ public class Controller implements Initializable{
 		}
 	}
 	
-	// TODO: Window will expand properly, however we need to find a way to hide certain controls on full-screen
 	public void handleExpand(){
 		if(primaryStage.isFullScreen()){
 			primaryStage.setFullScreen(false);
@@ -159,7 +158,6 @@ public class Controller implements Initializable{
 		}
 	}
 	
-	// FIXME: This opens one single file right now, needs to be expanded
 	public void handleOpen(){
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Media File");
@@ -178,10 +176,6 @@ public class Controller implements Initializable{
 		System.exit(0);
 	}
 	
-	// FIXME: Put your names in the about window!!
-	/**
-	 * @Source StackOverflow (http://stackoverflow.com/questions/22166610/how-to-create-a-popup-windows-in-javafx)
-	 */
 	public void handleAbout(){
         Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Help");
@@ -248,8 +242,9 @@ public class Controller implements Initializable{
 	        public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
 	            seekSlider.setValue(newValue.toMillis()/player.getStopTime().toMillis()*100);
 	            timeLabel.setText(durationString(newValue));
+	            durationLabel.setText(durationString(player.getStopTime()));
 	            
-	            if(player.getStopTime().toMillis() - newValue.toMillis() < 500){
+	            if(player.getStopTime().toMillis() - newValue.toMillis() < 300){
 	            	player.stop();
 	            	if(model.getLoop()){
 	            		playPause.setImage(new Image(Main.class.getResourceAsStream("/image/pause.png")));
@@ -264,6 +259,7 @@ public class Controller implements Initializable{
 		
 		if(model.getLoop()){
     		player.play();
+    		durationLabel.setText(durationString(player.getStopTime()));
     		playPause.setImage(new Image(Main.class.getResourceAsStream("/image/pause.png")));
     	}
 	}
