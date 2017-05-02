@@ -8,20 +8,21 @@ import javafx.beans.value.ObservableValue;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
-import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -49,6 +50,9 @@ public class Controller implements Initializable{
 	
 	@FXML private Label timeLabel;
 	@FXML private Label durationLabel;
+	
+	@FXML private ImageView loopIcon;
+	@FXML private ImageView playPause;
 
 	public void setMain(Main main){
 		this.main = main;
@@ -67,9 +71,7 @@ public class Controller implements Initializable{
 		media.setMediaPlayer(player);
 	}
 	
-	// FIXME: Handle the shuffle feature
 	public void handleShuffle(){
-		System.out.println("handleShuffle");
 		model.shuffle();
 	}
 	
@@ -98,34 +100,40 @@ public class Controller implements Initializable{
 		}
 	}
 	
-	// FIXME: Handle the repeat feature
 	public void handleRepeat(){
-		System.out.println("handleRepeat");
+		if(model.getLoop()){
+			model.setLoop(false);
+			loopIcon.setImage(new Image(Main.class.getResourceAsStream("/image/repeat.png")));
+		} else {
+			model.setLoop(true);
+			loopIcon.setImage(new Image(Main.class.getResourceAsStream("/image/repeaton.png")));
+		}
 	}
 	
-	// FIXME: Handle the previous media button
 	public void handleBack(){
-		System.out.println("handleBack");
 		model.previousFile();
+		handleChange();
 	}
 	
-	// FIXME: Handle the play button
 	public void handlePlay(){
-		System.out.println("handlePlay");
-		System.out.println(media.getMediaPlayer().getMedia().getSource());
+		double temp = seekSlider.getValue();
 		if(player.getStatus() == MediaPlayer.Status.READY || player.getStatus() == MediaPlayer.Status.PAUSED || player.getStatus() == MediaPlayer.Status.STOPPED){
 			player.play();
 			durationLabel.setText(durationString(player.getStopTime()));
+			playPause.setImage(new Image(Main.class.getResourceAsStream("/image/pause.png")));
 		}
-		else
+		else{
+			player.stop();
 			player.pause();
-		System.out.println(player.getStatus());
+			player.seek(new Duration(player.getStopTime().toMillis() * temp / 100.0));
+			seekSlider.setValue(temp);
+			playPause.setImage(new Image(Main.class.getResourceAsStream("/image/play.png")));
+		}
 	}
 	
-	// FIXME: Handle the next media button
 	public void handleNext(){
-		System.out.println("handleNext");
 		model.nextFile();
+		handleChange();
 	}
 	
 	// FIXME: Handle the mute button. Remember it works with the volume slider.
@@ -154,22 +162,16 @@ public class Controller implements Initializable{
 	// FIXME: This opens one single file right now, needs to be expanded
 	public void handleOpen(){
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Open Resource File");
+		fileChooser.setTitle("Open Media File");
 		model.setSelectedFile(fileChooser.showOpenDialog(primaryStage));
-		player.stop();
-		player = new MediaPlayer(new Media(model.getSelectedFile().toURI().toString()));
-		media.setMediaPlayer(player);
-		media.fitWidthProperty().bind(((BorderPane) (media.getParent())).widthProperty());
-		media.fitHeightProperty().bind(((BorderPane) (media.getParent())).heightProperty());
-		media.setPreserveRatio(true);
-		
-		player.currentTimeProperty().addListener(new ChangeListener<Duration>() {
-		    @Override
-	        public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
-	            seekSlider.setValue(newValue.toMillis()/player.getStopTime().toMillis()*100);
-	            timeLabel.setText(durationString(newValue));
-		    }
-		});
+		handleChange();
+	}
+	
+	public void handleOpenFolder(){
+		DirectoryChooser folderChooser = new DirectoryChooser();
+		folderChooser.setTitle("Open Media Folder");
+		model.setSelectedDirectory(folderChooser.showDialog(primaryStage));
+		handleChange();
 	}
 	
 	public void handleExit(){
@@ -181,11 +183,10 @@ public class Controller implements Initializable{
 	 * @Source StackOverflow (http://stackoverflow.com/questions/22166610/how-to-create-a-popup-windows-in-javafx)
 	 */
 	public void handleAbout(){
-		final Stage dialog = new Stage();
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(primaryStage);
-        VBox dialogVbox = new VBox(20);
-        dialogVbox.getChildren().add(new Text("Team Members:"
+        Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Help");
+		alert.setHeaderText(null);
+		alert.setContentText("Team Members:"
         		+ "\n - Jackson Blankenship"
         		+ "\n - Mathew Borum"
         		+ "\n - Christoph Kinzel"
@@ -197,11 +198,9 @@ public class Controller implements Initializable{
         		+ "\n - Left : Previous"
         		+ "\n - Right : Next"
         		+ "\n - M : Mute"
-        		+ "\n - F11 : Fullscreen"));
-        		
-        Scene dialogScene = new Scene(dialogVbox, 300, 300);
-        dialog.setScene(dialogScene);
-        dialog.show();
+        		+ "\n - F11 : Fullscreen");
+
+		alert.showAndWait();
 	}
 
 	@Override
@@ -227,12 +226,46 @@ public class Controller implements Initializable{
 		
 		seekSlider.valueProperty().addListener(new ChangeListener<Number>() {
 		    @Override
-		    public void changed(ObservableValue<? extends Number> observable,
-		            Number oldValue, Number newValue) {
-	    		if(((double)newValue - (double)oldValue) > 1 || ((double)newValue - (double)oldValue < 0))
+		    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+	    		if( ((double)newValue - (double)oldValue) > (12/player.getStopTime().toSeconds()) || ((double)newValue - (double)oldValue < 0) )
 		    		player.seek(new Duration(player.getStopTime().toMillis() * seekSlider.getValue() / 100.0));
+	    			//System.out.println("actually seeking");
 		    }
 		});
+	}
+	
+	public void handleChange(){
+		player.stop();
+		player = new MediaPlayer(new Media(model.getSelectedFile().toURI().toString()));
+		primaryStage.setTitle(model.getSelectedFile().getName());
+		media.setMediaPlayer(player);
+		media.fitWidthProperty().bind(((BorderPane) (media.getParent())).widthProperty());
+		media.fitHeightProperty().bind(((BorderPane) (media.getParent())).heightProperty());
+		media.setPreserveRatio(true);
+		
+		player.currentTimeProperty().addListener(new ChangeListener<Duration>() {
+		    @Override
+	        public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
+	            seekSlider.setValue(newValue.toMillis()/player.getStopTime().toMillis()*100);
+	            timeLabel.setText(durationString(newValue));
+	            
+	            if(player.getStopTime().toMillis() - newValue.toMillis() < 500){
+	            	player.stop();
+	            	if(model.getLoop()){
+	            		playPause.setImage(new Image(Main.class.getResourceAsStream("/image/pause.png")));
+	            		handleNext();
+	            	} else
+	            		playPause.setImage(new Image(Main.class.getResourceAsStream("/image/play.png")));
+	            }
+		    }
+		});
+		
+		playPause.setImage(new Image(Main.class.getResourceAsStream("/image/play.png")));
+		
+		if(model.getLoop()){
+    		player.play();
+    		playPause.setImage(new Image(Main.class.getResourceAsStream("/image/pause.png")));
+    	}
 	}
 
 	private static String durationString(Duration dur) {

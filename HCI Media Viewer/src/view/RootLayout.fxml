@@ -50,7 +50,7 @@
                         <Insets top="5.0" />
                      </opaqueInsets>
                      <graphic>
-                        <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="shuffIcon" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../image/shuffle.png" />
                            </image>
@@ -61,7 +61,7 @@
                         <Insets bottom="5.0" top="5.0" />
                      </opaqueInsets>
                      <graphic>
-                        <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="loopIcon" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../image/repeat.png" />
                            </image>
@@ -83,7 +83,7 @@
                         <Insets bottom="5.0" top="5.0" />
                      </opaqueInsets>
                      <graphic>
-                        <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="playPause" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../image/play.png" />
                            </image>
@@ -142,15 +142,23 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-                  <MenuItem mnemonicParsing="false" onAction="#handleOpen" text="Open">
+                  <MenuItem mnemonicParsing="false" onAction="#handleOpen" text="Open File">
+                     <graphic>
+                        <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../image/file.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" onAction="#handleOpenFolder" text="Open Folder">
                      <graphic>
                         <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../image/open.png" />
                            </image>
                         </ImageView>
-                     </graphic>
-                  </MenuItem>
+                     </graphic></MenuItem>
               <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Exit">
                      <graphic>
                         <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
