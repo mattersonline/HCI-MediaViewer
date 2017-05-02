@@ -5,7 +5,6 @@ import java.util.ResourceBundle;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -164,9 +163,18 @@ public class Controller implements Initializable{
         VBox dialogVbox = new VBox(20);
         dialogVbox.getChildren().add(new Text("Team Members:"
         		+ "\n - Jackson Blankenship"
-        		+ "\n - PUT YOUR NAMES HERE"
+        		+ "\n - Mathew Borum"
+        		+ "\n - Christoph Kinzel"
+        		+ "\n - Zachary Connor"
         		+ "\n\nShortcuts:"
-        		+ "\n - CTRL-O : Open file"));
+        		+ "\n - R : Repeat"
+        		+ "\n - S : Shuffle"
+        		+ "\n - Space/Enter : Play/Pause"
+        		+ "\n - Left : Previous"
+        		+ "\n - Right : Next"
+        		+ "\n - M : Mute"
+        		+ "\n - F11 : Fullscreen"));
+        		
         Scene dialogScene = new Scene(dialogVbox, 300, 200);
         dialog.setScene(dialogScene);
         dialog.show();
