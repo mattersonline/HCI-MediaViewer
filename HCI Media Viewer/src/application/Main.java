@@ -27,6 +27,8 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("HCI Media Viewer");;
 			primaryStage.show();
+			primaryStage.setMinWidth(primaryStage.getWidth());
+			primaryStage.setMinHeight(primaryStage.getHeight());
 			
 		} catch(Exception e) {
 			e.printStackTrace();

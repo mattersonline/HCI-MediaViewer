@@ -3,6 +3,10 @@ package application;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -117,11 +121,13 @@ public class Controller implements Initializable{
 	public void handleMute(){
 		if(!model.isMute()){
 			model.setMute(true);
-			model.setVolumeLevel(volumeSlider.getValue());
+			volumeSlider.setDisable(true);
+			model.setPreviousVolume(volumeSlider.getValue());
 			volumeSlider.setValue(0);
 		} else {
 			model.setMute(false);
-			volumeSlider.setValue(model.getVolumeLevel());;
+			volumeSlider.setDisable(false);
+			volumeSlider.setValue(model.getPreviousVolume());
 		}
 	}
 	
@@ -170,6 +176,15 @@ public class Controller implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		player = new MediaPlayer(new Media(Main.class.getResource("/image/default.mp4").toExternalForm()));
 		media.setMediaPlayer(player);
+
+		
+		volumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
+		    @Override
+		    public void changed(ObservableValue<? extends Number> observable,
+		            Number oldValue, Number newValue) {
+	    		model.setVolumeLevel(volumeSlider.getValue());
+		    }
+		});
 	}
 
 
