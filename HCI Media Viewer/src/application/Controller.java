@@ -22,6 +22,7 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class Controller implements Initializable{
 
@@ -177,6 +178,12 @@ public class Controller implements Initializable{
 		player = new MediaPlayer(new Media(Main.class.getResource("/image/default.mp4").toExternalForm()));
 		media.setMediaPlayer(player);
 
+		player.currentTimeProperty().addListener(new ChangeListener<Duration>() {
+		    @Override
+	        public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
+	            System.out.println("time changed:" + newValue);
+		    }
+		});
 		
 		volumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
 		    @Override
