@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -44,6 +45,10 @@ public class Controller implements Initializable{
 
 	@FXML private MediaView media;
 	@FXML private Slider volumeSlider;
+	@FXML private Slider seekSlider;
+	
+	@FXML private Label timeLabel;
+	@FXML private Label durationLabel;
 
 	public void setMain(Main main){
 		this.main = main;
@@ -108,8 +113,10 @@ public class Controller implements Initializable{
 	public void handlePlay(){
 		System.out.println("handlePlay");
 		System.out.println(media.getMediaPlayer().getMedia().getSource());
-		if(player.getStatus() == MediaPlayer.Status.READY || player.getStatus() == MediaPlayer.Status.PAUSED || player.getStatus() == MediaPlayer.Status.STOPPED)
+		if(player.getStatus() == MediaPlayer.Status.READY || player.getStatus() == MediaPlayer.Status.PAUSED || player.getStatus() == MediaPlayer.Status.STOPPED){
 			player.play();
+			durationLabel.setText(durationString(player.getStopTime()));
+		}
 		else
 			player.pause();
 		System.out.println(player.getStatus());
@@ -149,12 +156,20 @@ public class Controller implements Initializable{
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Resource File");
 		model.setSelectedFile(fileChooser.showOpenDialog(primaryStage));
+		player.stop();
 		player = new MediaPlayer(new Media(model.getSelectedFile().toURI().toString()));
-		media.setMediaPlayer(player);
 		media.setMediaPlayer(player);
 		media.fitWidthProperty().bind(((BorderPane) (media.getParent())).widthProperty());
 		media.fitHeightProperty().bind(((BorderPane) (media.getParent())).heightProperty());
 		media.setPreserveRatio(true);
+		
+		player.currentTimeProperty().addListener(new ChangeListener<Duration>() {
+		    @Override
+	        public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
+	            seekSlider.setValue(newValue.toMillis()/player.getStopTime().toMillis()*100);
+	            timeLabel.setText(durationString(newValue));
+		    }
+		});
 	}
 	
 	public void handleExit(){
@@ -191,13 +206,13 @@ public class Controller implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		player = new MediaPlayer(new Media(Main.class.getResource("/image/default.mp4").toExternalForm()));
+		player = new MediaPlayer(new Media(Main.class.getResource("/image/default.mp3").toExternalForm()));
 		media.setMediaPlayer(player);
 
 		player.currentTimeProperty().addListener(new ChangeListener<Duration>() {
 		    @Override
 	        public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
-	            System.out.println("time changed:" + newValue);
+	            seekSlider.setValue(newValue.toMillis()/player.getStopTime().toMillis()*100);
 		    }
 		});
 		
@@ -206,11 +221,33 @@ public class Controller implements Initializable{
 		    public void changed(ObservableValue<? extends Number> observable,
 		            Number oldValue, Number newValue) {
 	    		model.setVolumeLevel(volumeSlider.getValue());
+	    		player.setVolume(model.getVolumeLevel()/100.0);
+		    }
+		});
+		
+		seekSlider.valueProperty().addListener(new ChangeListener<Number>() {
+		    @Override
+		    public void changed(ObservableValue<? extends Number> observable,
+		            Number oldValue, Number newValue) {
+	    		if(((double)newValue - (double)oldValue) > 1 || ((double)newValue - (double)oldValue < 0))
+		    		player.seek(new Duration(player.getStopTime().toMillis() * seekSlider.getValue() / 100.0));
 		    }
 		});
 	}
 
-
+	private static String durationString(Duration dur) {
+		int time = (int)Math.floor(dur.toSeconds());
+		int hours = time / (60 * 60);
+		if (hours > 0)
+			time -= hours * 60 * 60;
+		int min = time / 60;
+		int sec = time - hours * 60 * 60 - min * 60;
+		if (hours > 0) {
+			return String.format("%d:%02d:%02d", hours, min, sec);
+		} else {
+			return String.format("%02d:%02d",min, sec);
+		}
+	}
 	
 
 }
