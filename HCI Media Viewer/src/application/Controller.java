@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
@@ -36,7 +37,9 @@ public class Controller implements Initializable{
 	@FXML private Button nextButton;
 	@FXML private Button muteButton;
 	@FXML private Button fullscreenButton;
+
 	@FXML private MediaView media;
+	@FXML private Slider volumeSlider;
 
 	public void setMain(Main main){
 		this.main = main;
@@ -113,7 +116,14 @@ public class Controller implements Initializable{
 	
 	// FIXME: Handle the mute button. Remember it works with the volume slider.
 	public void handleMute(){
-		System.out.println("handleMute");
+		if(!model.isMute()){
+			model.setMute(true);
+			model.setVolumeLevel(volumeSlider.getValue());
+			volumeSlider.setValue(0);
+		} else {
+			model.setMute(false);
+			volumeSlider.setValue(model.getVolumeLevel());;
+		}
 	}
 	
 	// TODO: Window will expand properly, however we need to find a way to hide certain controls on full-screen

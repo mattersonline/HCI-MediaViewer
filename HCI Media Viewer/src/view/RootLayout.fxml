@@ -112,7 +112,7 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Slider showTickMarks="true" snapToTicks="true">
+                  <Slider fx:id="volumeSlider" showTickMarks="true" snapToTicks="true">
                      <opaqueInsets>
                         <Insets bottom="5.0" top="5.0" />
                      </opaqueInsets></Slider>
