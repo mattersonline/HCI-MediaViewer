@@ -6,6 +6,8 @@ public class Model {
 	File selectedFile;
 	double volumeLevel = 100;
 	double previousVolume = 0;
+	boolean mute = false;
+	
 	public double getPreviousVolume() {
 		return previousVolume;
 	}
@@ -13,9 +15,7 @@ public class Model {
 	public void setPreviousVolume(double previousVolume) {
 		this.previousVolume = previousVolume;
 	}
-
-	boolean mute = false;
-
+	
 	public boolean isMute() {
 		return mute;
 	}
