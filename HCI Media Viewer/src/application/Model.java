@@ -1,3 +1,9 @@
+/*	Project: HCI Media Viewer
+ * 	File: Model.java
+ * 	Date: 5/3/17
+ * 	Creators: Jackson Blankenship, Mathew Borum, Christoph Kinzel, Zachary Connor
+ * 	Purpose: To contain the information that is modified by the rest of the program
+ */
 package application;
 
 import java.io.File;

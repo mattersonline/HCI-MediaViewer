@@ -1,3 +1,9 @@
+/*	Project: HCI Media Viewer
+ * 	File: Controller.java
+ * 	Date: 5/3/17
+ * 	Creators: Jackson Blankenship, Mathew Borum, Christoph Kinzel, Zachary Connor
+ * 	Purpose: To contain the listeners that drive the program
+ */
 package application;
 
 import java.net.URL;
@@ -57,27 +63,33 @@ public class Controller implements Initializable{
 	@FXML private ImageView loopIcon;
 	@FXML private ImageView playPause;
 
+	//Sets the parent class
 	public void setMain(Main main){
 		this.main = main;
 	}
 	
+	//Sets the stage
 	public void setStage(Stage primaryStage){
 		this.primaryStage = primaryStage;
 	}
 	
+	//Sets the model
 	public void setModel(Model model){
 		this.model = model;
 	}
 	
+	//Sets the player
 	public void setPlayer(MediaPlayer player){
 		this.player = player;
 		media.setMediaPlayer(player);
 	}
 	
+	//Handles the shuffle button
 	public void handleShuffle(){
 		model.shuffle();
 	}
 	
+	//Implements keyboard shortcuts
 	public void handleKeyboard(KeyEvent e){
 		
 		if(e.getCode() == KeyCode.S){
@@ -103,6 +115,7 @@ public class Controller implements Initializable{
 		}
 	}
 	
+	//Handles the repeat button
 	public void handleRepeat(){
 		if(model.getLoop()){
 			model.setLoop(false);
@@ -113,11 +126,13 @@ public class Controller implements Initializable{
 		}
 	}
 	
+	//Handles the back button
 	public void handleBack(){
 		model.previousFile();
 		handleChange();
 	}
 	
+	//Handles the play button
 	public void handlePlay(){
 		double temp = seekSlider.getValue();
 		if(player.getStatus() == MediaPlayer.Status.READY || player.getStatus() == MediaPlayer.Status.PAUSED || player.getStatus() == MediaPlayer.Status.STOPPED){
@@ -132,11 +147,13 @@ public class Controller implements Initializable{
 		}
 	}
 	
+	//Handles the next button
 	public void handleNext(){
 		model.nextFile();
 		handleChange();
 	}
 	
+	//Handles the mute button
 	public void handleMute(){
 		if(!model.isMute()){
 			model.setMute(true);
@@ -150,6 +167,7 @@ public class Controller implements Initializable{
 		}
 	}
 	
+	//Handles the expand button
 	public void handleExpand(){
 		if(primaryStage.isFullScreen()){
 			primaryStage.setFullScreen(false);
@@ -159,6 +177,7 @@ public class Controller implements Initializable{
 		}
 	}
 	
+	//Handles the open function
 	public void handleOpen(){
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Media File");
@@ -166,6 +185,8 @@ public class Controller implements Initializable{
 		handleChange();
 	}
 	
+	
+	//Handles the open folder function
 	public void handleOpenFolder(){
 		DirectoryChooser folderChooser = new DirectoryChooser();
 		folderChooser.setTitle("Open Media Folder");
@@ -173,10 +194,12 @@ public class Controller implements Initializable{
 		handleChange();
 	}
 	
+	//Exits the program
 	public void handleExit(){
 		System.exit(0);
 	}
 	
+	//Implements the about window
 	public void handleAbout(){
         Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Help");
@@ -198,6 +221,7 @@ public class Controller implements Initializable{
 		alert.showAndWait();
 	}
 
+	//Updates everything on launch
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		faderSlider.setValue(50);
@@ -207,7 +231,7 @@ public class Controller implements Initializable{
 		media.setOnMouseClicked((MouseEvent event) -> {
 			handlePlay();
 		});
-		
+		volumeSlider.setValue(100);
 
 		player.currentTimeProperty().addListener(new ChangeListener<Duration>() {
 		    @Override
@@ -243,6 +267,7 @@ public class Controller implements Initializable{
 		});
 	}
 	
+	//Handles the change in files
 	public void handleChange(){
 		player.stop();
 		player = new MediaPlayer(new Media(model.getSelectedFile().toURI().toString()));
@@ -278,7 +303,8 @@ public class Controller implements Initializable{
     		playPause.setImage(new Image(Main.class.getResourceAsStream("/image/pause.png")));
     	}
 	}
-
+	
+	//Checks the duration and formats the duration
 	private static String durationString(Duration dur) {
 		int time = (int)Math.floor(dur.toSeconds());
 		int hours = time / (60 * 60);
