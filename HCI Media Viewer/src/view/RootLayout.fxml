@@ -19,7 +19,7 @@
    <bottom>
       <VBox prefHeight="59.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+            <HBox fx:id="timeScrollerBar" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Label fx:id="timeLabel" text="00:00:00">
                      <padding>
@@ -43,7 +43,7 @@
                   <Insets bottom="5.0" top="10.0" />
                </padding>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+            <HBox fx:id="toolbar" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Button fx:id="shuffleButton" mnemonicParsing="false" onAction="#handleShuffle" onKeyPressed="#handleKeyboard">
                      <opaqueInsets>
@@ -138,7 +138,7 @@
       </VBox>
    </bottom>
    <top>
-      <MenuBar BorderPane.alignment="CENTER">
+      <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
