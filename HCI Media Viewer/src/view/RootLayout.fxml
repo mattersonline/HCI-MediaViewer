@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.media.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -16,11 +24,11 @@
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#handleKeyboard" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Controller">
    <bottom>
-      <VBox prefHeight="59.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <VBox onKeyPressed="#handleKeyboard" prefHeight="59.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox fx:id="timeScrollerBar" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+            <HBox fx:id="timeScrollerBar" alignment="CENTER" onKeyPressed="#handleKeyboard" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Label fx:id="timeLabel" text="00:00:00">
                      <padding>
@@ -30,7 +38,7 @@
                         <ColorAdjust brightness="-0.9" />
                      </effect>
                   </Label>
-                  <Slider fx:id="seekSlider" HBox.hgrow="ALWAYS" />
+                  <Slider fx:id="seekSlider" onKeyPressed="#handleKeyboard" HBox.hgrow="ALWAYS" />
                   <Label fx:id="durationLabel" text="-00:00:00">
                      <padding>
                         <Insets right="30.0" />
@@ -44,7 +52,7 @@
                   <Insets bottom="5.0" top="10.0" />
                </padding>
             </HBox>
-            <HBox fx:id="toolbar" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+            <HBox fx:id="toolbar" alignment="CENTER" onKeyPressed="#handleKeyboard" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Button fx:id="shuffleButton" mnemonicParsing="false" onAction="#handleShuffle" onKeyPressed="#handleKeyboard">
                      <opaqueInsets>
@@ -68,7 +76,7 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Button fx:id="previousButton" mnemonicParsing="false" onAction="#handleBack">
+                  <Button fx:id="previousButton" mnemonicParsing="false" onAction="#handleBack" onKeyPressed="#handleKeyboard">
                      <opaqueInsets>
                         <Insets bottom="5.0" top="5.0" />
                      </opaqueInsets>
@@ -79,7 +87,7 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Button fx:id="playPauseButton" mnemonicParsing="false" onAction="#handlePlay">
+                  <Button fx:id="playPauseButton" mnemonicParsing="false" onAction="#handlePlay" onKeyPressed="#handleKeyboard">
                      <opaqueInsets>
                         <Insets bottom="5.0" top="5.0" />
                      </opaqueInsets>
@@ -90,7 +98,7 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Button fx:id="nextButton" mnemonicParsing="false" onAction="#handleNext">
+                  <Button fx:id="nextButton" mnemonicParsing="false" onAction="#handleNext" onKeyPressed="#handleKeyboard">
                      <opaqueInsets>
                         <Insets bottom="5.0" top="5.0" />
                      </opaqueInsets>
@@ -101,7 +109,7 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Button fx:id="muteButton" mnemonicParsing="false" onAction="#handleMute">
+                  <Button fx:id="muteButton" mnemonicParsing="false" onAction="#handleMute" onKeyPressed="#handleKeyboard">
                      <opaqueInsets>
                         <Insets bottom="5.0" top="5.0" />
                      </opaqueInsets>
@@ -112,11 +120,11 @@
                            </image>
                         </ImageView>
                      </graphic></Button>
-                  <Slider fx:id="volumeSlider" showTickMarks="true" snapToTicks="true">
+                  <Slider fx:id="volumeSlider" onKeyPressed="#handleKeyboard" showTickMarks="true" snapToTicks="true">
                      <opaqueInsets>
                         <Insets bottom="5.0" top="5.0" />
                      </opaqueInsets></Slider>
-                  <Button fx:id="fullscreenButton" mnemonicParsing="false" onAction="#handleExpand">
+                  <Button fx:id="fullscreenButton" mnemonicParsing="false" onAction="#handleExpand" onKeyPressed="#handleKeyboard">
                      <opaqueInsets>
                         <Insets bottom="5.0" top="5.0" />
                      </opaqueInsets>
@@ -135,7 +143,7 @@
                         <Insets left="10.0" right="-8.0" />
                      </HBox.margin>
                   </Label>
-                  <Slider fx:id="faderSlider" />
+                  <Slider fx:id="faderSlider" onKeyPressed="#handleKeyboard" />
                   <Label text="R">
                      <font>
                         <Font size="16.0" />
@@ -156,7 +164,7 @@
       </VBox>
    </bottom>
    <top>
-      <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
+      <MenuBar fx:id="menuBar" onKeyPressed="#handleKeyboard" BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
@@ -233,9 +241,9 @@
       </MenuBar>
    </top>
    <center>
-      <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER">
+      <BorderPane onKeyPressed="#handleKeyboard" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER">
          <center>
-            <MediaView fx:id="media" fitHeight="200.0" fitWidth="200.0" BorderPane.alignment="CENTER" />
+            <MediaView fx:id="media" fitHeight="200.0" fitWidth="200.0" onKeyPressed="#handleKeyboard" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
    </center>
