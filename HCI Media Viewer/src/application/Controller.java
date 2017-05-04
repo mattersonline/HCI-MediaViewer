@@ -201,6 +201,8 @@ public class Controller implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		player = new MediaPlayer(new Media(Main.class.getResource("/image/default.mp3").toExternalForm()));
 		media.setMediaPlayer(player);
+		
+		volumeSlider.setValue(100);
 
 		player.currentTimeProperty().addListener(new ChangeListener<Duration>() {
 		    @Override
