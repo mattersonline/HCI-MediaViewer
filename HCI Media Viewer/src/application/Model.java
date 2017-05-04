@@ -8,6 +8,7 @@ public class Model {
 	
 	double volumeLevel = 100;
 	double previousVolume = 0;
+	double balance = 50;
 
 	boolean loop;
 	
@@ -44,6 +45,14 @@ public class Model {
 
 	public void setVolumeLevel(double volumeLevel) {
 		this.volumeLevel = volumeLevel;
+	}
+
+	public double getBalance() {
+		return balance;
+	}
+
+	public void setBalance(double balance) {
+		this.balance = balance;
 	}
 
 	public File getSelectedFile() {

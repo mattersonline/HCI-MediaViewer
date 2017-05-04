@@ -17,6 +17,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -45,8 +46,10 @@ public class Controller implements Initializable{
 	@FXML private Button fullscreenButton;
 
 	@FXML private MediaView media;
+	
 	@FXML private Slider volumeSlider;
 	@FXML private Slider seekSlider;
+	@FXML private Slider faderSlider;
 	
 	@FXML private Label timeLabel;
 	@FXML private Label durationLabel;
@@ -123,10 +126,7 @@ public class Controller implements Initializable{
 			playPause.setImage(new Image(Main.class.getResourceAsStream("/image/pause.png")));
 		}
 		else{
-			if(model.getSelectedFile().getName().substring(model.getSelectedFile().getName().lastIndexOf('.') + 1).equals("mp4"))
-				player.stop();
 			player.pause();
-			player.seek(new Duration(player.getStopTime().toMillis() * temp / 100.0));
 			seekSlider.setValue(temp);
 			playPause.setImage(new Image(Main.class.getResourceAsStream("/image/play.png")));
 		}
@@ -153,6 +153,7 @@ public class Controller implements Initializable{
 	public void handleExpand(){
 		if(primaryStage.isFullScreen()){
 			primaryStage.setFullScreen(false);
+			((BorderPane) (media.getParent())).setPrefSize(primaryStage.getWidth(), primaryStage.getHeight());
 		} else {
 			primaryStage.setFullScreen(true);
 		}
@@ -199,8 +200,14 @@ public class Controller implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		faderSlider.setValue(50);
 		player = new MediaPlayer(new Media(Main.class.getResource("/image/default.mp3").toExternalForm()));
 		media.setMediaPlayer(player);
+		
+		media.setOnMouseClicked((MouseEvent event) -> {
+			handlePlay();
+		});
+		
 
 		player.currentTimeProperty().addListener(new ChangeListener<Duration>() {
 		    @Override
@@ -218,13 +225,21 @@ public class Controller implements Initializable{
 		    }
 		});
 		
-		seekSlider.valueProperty().addListener(new ChangeListener<Number>() {
+		faderSlider.valueProperty().addListener(new ChangeListener<Number>() {
 		    @Override
-		    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-	    		if( ((double)newValue - (double)oldValue) > (12/player.getStopTime().toSeconds()) || ((double)newValue - (double)oldValue < 0) )
-		    		player.seek(new Duration(player.getStopTime().toMillis() * seekSlider.getValue() / 100.0));
-	    			//System.out.println("actually seeking");
+		    public void changed(ObservableValue<? extends Number> observable,
+		            Number oldValue, Number newValue) {
+	    		model.setBalance(faderSlider.getValue());
+	    		player.setBalance((model.getBalance()/50.0)-1.0);
 		    }
+		});
+		
+		seekSlider.setOnMouseReleased((MouseEvent event) -> {
+			player.seek(new Duration(player.getStopTime().toMillis() * seekSlider.getValue() / 100.0));
+		});
+		
+		seekSlider.setOnMousePressed((MouseEvent event) -> {
+			player.seek(new Duration(player.getStopTime().toMillis() * seekSlider.getValue() / 100.0));
 		});
 	}
 	
