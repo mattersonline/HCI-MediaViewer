@@ -9,6 +9,8 @@ package application;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.sun.prism.paint.Color;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
@@ -17,17 +19,27 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -41,6 +53,9 @@ public class Controller implements Initializable{
 	private Main main;
 	private Model model;
 	private MediaPlayer player;
+	private String style;
+	private Font fullFont;
+	private Font minFont;
 	
 	// FXML Objects
 	@FXML private Button shuffleButton; // fx:id="shuffleButton"
@@ -62,6 +77,11 @@ public class Controller implements Initializable{
 	
 	@FXML private ImageView loopIcon;
 	@FXML private ImageView playPause;
+	
+	@FXML private HBox toolbar;
+	@FXML private HBox timeScrollerBar;
+	
+	@FXML private MenuBar menuBar;
 
 	//Sets the parent class
 	public void setMain(Main main){
@@ -171,9 +191,16 @@ public class Controller implements Initializable{
 	public void handleExpand(){
 		if(primaryStage.isFullScreen()){
 			primaryStage.setFullScreen(false);
+
+			toolbar.setStyle(style);
+			timeScrollerBar.setStyle(style);
+			menuBar.setStyle(style);
 			((BorderPane) (media.getParent())).setPrefSize(primaryStage.getWidth(), primaryStage.getHeight());
 		} else {
 			primaryStage.setFullScreen(true);
+			toolbar.setStyle("-fx-background-color: BLACK");
+			timeScrollerBar.setStyle("-fx-background-color: BLACK");
+			menuBar.setStyle("-fx-background-color: BLACK");
 		}
 	}
 	
@@ -227,6 +254,8 @@ public class Controller implements Initializable{
 		faderSlider.setValue(50);
 		player = new MediaPlayer(new Media(Main.class.getResource("/image/default.mp3").toExternalForm()));
 		media.setMediaPlayer(player);
+		style = toolbar.getStyle();
+		minFont = timeLabel.getFont();
 		
 		media.setOnMouseClicked((MouseEvent event) -> {
 			handlePlay();
