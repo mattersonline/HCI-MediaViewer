@@ -1,3 +1,9 @@
+/*	Project: HCI Media Viewer
+ * 	File: Main.java
+ * 	Date: 5/3/17
+ * 	Creators: Jackson Blankenship, Mathew Borum, Christoph Kinzel, Zachary Connor
+ * 	Purpose: To drive the start of the program
+ */
 package application;
 	
 import javafx.application.Application;
