@@ -1,3 +1,9 @@
+/*	Project: HCI Media Viewer
+ * 	File: Model.java
+ * 	Date: 5/3/17
+ * 	Creators: Jackson Blankenship, Mathew Borum, Christoph Kinzel, Zachary Connor
+ * 	Purpose: To contain the information that is modified by the rest of the program
+ */
 package application;
 
 import java.io.File;
@@ -8,6 +14,7 @@ public class Model {
 	
 	double volumeLevel = 100;
 	double previousVolume = 0;
+	double balance = 50;
 
 	boolean loop;
 	
@@ -44,6 +51,14 @@ public class Model {
 
 	public void setVolumeLevel(double volumeLevel) {
 		this.volumeLevel = volumeLevel;
+	}
+
+	public double getBalance() {
+		return balance;
+	}
+
+	public void setBalance(double balance) {
+		this.balance = balance;
 	}
 
 	public File getSelectedFile() {

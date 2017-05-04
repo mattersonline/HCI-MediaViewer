@@ -1,3 +1,9 @@
+/*	Project: HCI Media Viewer
+ * 	File: Controller.java
+ * 	Date: 5/3/17
+ * 	Creators: Jackson Blankenship, Mathew Borum, Christoph Kinzel, Zachary Connor
+ * 	Purpose: To contain the listeners that drive the program
+ */
 package application;
 
 import java.net.URL;
@@ -20,11 +26,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
@@ -59,8 +67,10 @@ public class Controller implements Initializable{
 	@FXML private Button fullscreenButton;
 
 	@FXML private MediaView media;
+	
 	@FXML private Slider volumeSlider;
 	@FXML private Slider seekSlider;
+	@FXML private Slider faderSlider;
 	
 	@FXML private Label timeLabel;
 	@FXML private Label durationLabel;
@@ -73,27 +83,33 @@ public class Controller implements Initializable{
 	
 	@FXML private MenuBar menuBar;
 
+	//Sets the parent class
 	public void setMain(Main main){
 		this.main = main;
 	}
 	
+	//Sets the stage
 	public void setStage(Stage primaryStage){
 		this.primaryStage = primaryStage;
 	}
 	
+	//Sets the model
 	public void setModel(Model model){
 		this.model = model;
 	}
 	
+	//Sets the player
 	public void setPlayer(MediaPlayer player){
 		this.player = player;
 		media.setMediaPlayer(player);
 	}
 	
+	//Handles the shuffle button
 	public void handleShuffle(){
 		model.shuffle();
 	}
 	
+	//Implements keyboard shortcuts
 	public void handleKeyboard(KeyEvent e){
 		
 		if(e.getCode() == KeyCode.S){
@@ -119,6 +135,7 @@ public class Controller implements Initializable{
 		}
 	}
 	
+	//Handles the repeat button
 	public void handleRepeat(){
 		if(model.getLoop()){
 			model.setLoop(false);
@@ -129,11 +146,13 @@ public class Controller implements Initializable{
 		}
 	}
 	
+	//Handles the back button
 	public void handleBack(){
 		model.previousFile();
 		handleChange();
 	}
 	
+	//Handles the play button
 	public void handlePlay(){
 		double temp = seekSlider.getValue();
 		if(player.getStatus() == MediaPlayer.Status.READY || player.getStatus() == MediaPlayer.Status.PAUSED || player.getStatus() == MediaPlayer.Status.STOPPED){
@@ -142,20 +161,19 @@ public class Controller implements Initializable{
 			playPause.setImage(new Image(Main.class.getResourceAsStream("/image/pause.png")));
 		}
 		else{
-			if(model.getSelectedFile().getName().substring(model.getSelectedFile().getName().lastIndexOf('.') + 1).equals("mp4"))
-				player.stop();
 			player.pause();
-			player.seek(new Duration(player.getStopTime().toMillis() * temp / 100.0));
 			seekSlider.setValue(temp);
 			playPause.setImage(new Image(Main.class.getResourceAsStream("/image/play.png")));
 		}
 	}
 	
+	//Handles the next button
 	public void handleNext(){
 		model.nextFile();
 		handleChange();
 	}
 	
+	//Handles the mute button
 	public void handleMute(){
 		if(!model.isMute()){
 			model.setMute(true);
@@ -169,12 +187,15 @@ public class Controller implements Initializable{
 		}
 	}
 	
+	//Handles the expand button
 	public void handleExpand(){
 		if(primaryStage.isFullScreen()){
 			primaryStage.setFullScreen(false);
+
 			toolbar.setStyle(style);
 			timeScrollerBar.setStyle(style);
 			menuBar.setStyle(style);
+			((BorderPane) (media.getParent())).setPrefSize(primaryStage.getWidth(), primaryStage.getHeight());
 		} else {
 			primaryStage.setFullScreen(true);
 			toolbar.setStyle("-fx-background-color: BLACK");
@@ -183,6 +204,7 @@ public class Controller implements Initializable{
 		}
 	}
 	
+	//Handles the open function
 	public void handleOpen(){
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Media File");
@@ -190,6 +212,8 @@ public class Controller implements Initializable{
 		handleChange();
 	}
 	
+	
+	//Handles the open folder function
 	public void handleOpenFolder(){
 		DirectoryChooser folderChooser = new DirectoryChooser();
 		folderChooser.setTitle("Open Media Folder");
@@ -197,10 +221,12 @@ public class Controller implements Initializable{
 		handleChange();
 	}
 	
+	//Exits the program
 	public void handleExit(){
 		System.exit(0);
 	}
 	
+	//Implements the about window
 	public void handleAbout(){
         Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Help");
@@ -222,12 +248,20 @@ public class Controller implements Initializable{
 		alert.showAndWait();
 	}
 
+	//Updates everything on launch
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		faderSlider.setValue(50);
 		player = new MediaPlayer(new Media(Main.class.getResource("/image/default.mp3").toExternalForm()));
 		media.setMediaPlayer(player);
 		style = toolbar.getStyle();
 		minFont = timeLabel.getFont();
+		
+		media.setOnMouseClicked((MouseEvent event) -> {
+			handlePlay();
+		});
+		volumeSlider.setValue(100);
+
 		player.currentTimeProperty().addListener(new ChangeListener<Duration>() {
 		    @Override
 	        public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
@@ -244,16 +278,25 @@ public class Controller implements Initializable{
 		    }
 		});
 		
-		seekSlider.valueProperty().addListener(new ChangeListener<Number>() {
+		faderSlider.valueProperty().addListener(new ChangeListener<Number>() {
 		    @Override
-		    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-	    		if( ((double)newValue - (double)oldValue) > (12/player.getStopTime().toSeconds()) || ((double)newValue - (double)oldValue < 0) )
-		    		player.seek(new Duration(player.getStopTime().toMillis() * seekSlider.getValue() / 100.0));
-	    			//System.out.println("actually seeking");
+		    public void changed(ObservableValue<? extends Number> observable,
+		            Number oldValue, Number newValue) {
+	    		model.setBalance(faderSlider.getValue());
+	    		player.setBalance((model.getBalance()/50.0)-1.0);
 		    }
+		});
+		
+		seekSlider.setOnMouseReleased((MouseEvent event) -> {
+			player.seek(new Duration(player.getStopTime().toMillis() * seekSlider.getValue() / 100.0));
+		});
+		
+		seekSlider.setOnMousePressed((MouseEvent event) -> {
+			player.seek(new Duration(player.getStopTime().toMillis() * seekSlider.getValue() / 100.0));
 		});
 	}
 	
+	//Handles the change in files
 	public void handleChange(){
 		player.stop();
 		player = new MediaPlayer(new Media(model.getSelectedFile().toURI().toString()));
@@ -289,7 +332,8 @@ public class Controller implements Initializable{
     		playPause.setImage(new Image(Main.class.getResourceAsStream("/image/pause.png")));
     	}
 	}
-
+	
+	//Checks the duration and formats the duration
 	private static String durationString(Duration dur) {
 		int time = (int)Math.floor(dur.toSeconds());
 		int hours = time / (60 * 60);
